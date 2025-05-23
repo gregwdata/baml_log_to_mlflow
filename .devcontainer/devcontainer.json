@@ -1,0 +1,47 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
+{
+	"name": "MLFlow_with_BAML",
+
+	// Sets the run context to one level up instead of the .devcontainer folder.
+	"context": "..",
+
+	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+	"dockerFile": "Dockerfile.dev-container",
+    "settings": {
+        "python.pythonPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "files.associations": {
+            "*.sql": "jinja-sql"
+        }
+        // any other settings go here
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
+        "Boundary.baml-extension",
+        "ms-vscode.makefile-tools",
+        "EditorConfig.EditorConfig",
+        "samuelcolvin.jinjahtml",
+        "github.vscode-pull-request-github",
+        "eamodio.gitlens",
+        "visualstudioexptteam.vscodeintellicode",
+        "vivaxy.vscode-conventional-commits",
+        "mechatroner.rainbow-csv",
+        "github.copilot",
+        "github.copilot-chat"
+    ],
+    // "features": {
+    //     //see https://github.com/devcontainers/features/tree/main/src/docker-in-docker for details on below
+    //     "ghcr.io/devcontainers/features/docker-in-docker:1":{}
+    // },
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [5000, 8080],
+
+	// Uncomment the next line to run commands after the container is created - for example installing curl.
+	"postCreateCommand": "pip3 install -r requirements.txt"
+
+	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+}
