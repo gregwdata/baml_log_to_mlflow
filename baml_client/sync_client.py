@@ -125,6 +125,33 @@ class BamlSyncClient:
       )
       return cast(List[types.Inventory], raw.cast_to(types, types, partial_types, False))
     
+    def UpdateInventory(
+        self,
+        current_inventory: List[types.Inventory],change_message: str,
+        baml_options: BamlCallOptions = {},
+    ) -> List[types.Inventory]:
+      options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
+      __tb__ = options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = options.get("client_registry", None)
+      collector = options.get("collector", None)
+      collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
+
+      raw = self.__runtime.call_function_sync(
+        "UpdateInventory",
+        {
+          "current_inventory": current_inventory,"change_message": change_message,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        collectors,
+      )
+      return cast(List[types.Inventory], raw.cast_to(types, types, partial_types, False))
+    
 
 
 
@@ -157,6 +184,41 @@ class BamlStreamClient:
         "ListInventory",
         {
           "inventory_text": inventory_text,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        collectors,
+      )
+
+      return baml_py.BamlSyncStream[List[partial_types.Inventory], List[types.Inventory]](
+        raw,
+        lambda x: cast(List[partial_types.Inventory], x.cast_to(types, types, partial_types, True)),
+        lambda x: cast(List[types.Inventory], x.cast_to(types, types, partial_types, False)),
+        self.__ctx_manager.get(),
+      )
+    
+    def UpdateInventory(
+        self,
+        current_inventory: List[types.Inventory],change_message: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlSyncStream[List[partial_types.Inventory], List[types.Inventory]]:
+      options: BamlCallOptions = {**self.__baml_options, **(baml_options or {})}
+      __tb__ = options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = options.get("client_registry", None)
+      collector = options.get("collector", None)
+      collectors = collector if isinstance(collector, list) else [collector] if collector is not None else []
+
+      raw = self.__runtime.stream_function_sync(
+        "UpdateInventory",
+        {
+          "current_inventory": current_inventory,
+          "change_message": change_message,
         },
         None,
         self.__ctx_manager.get(),

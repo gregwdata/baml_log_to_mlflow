@@ -60,6 +60,30 @@ class AsyncHttpRequest:
         False,
       )
     
+    async def UpdateInventory(
+        self,
+        current_inventory: List[types.Inventory],change_message: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.HTTPRequest:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      return await self.__runtime.build_request(
+        "UpdateInventory",
+        {
+          "current_inventory": current_inventory,
+          "change_message": change_message,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        False,
+      )
+    
 
 
 class AsyncHttpStreamRequest:
@@ -87,6 +111,30 @@ class AsyncHttpStreamRequest:
         "ListInventory",
         {
           "inventory_text": inventory_text,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+        True,
+      )
+    
+    async def UpdateInventory(
+        self,
+        current_inventory: List[types.Inventory],change_message: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.HTTPRequest:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      return await self.__runtime.build_request(
+        "UpdateInventory",
+        {
+          "current_inventory": current_inventory,
+          "change_message": change_message,
         },
         self.__ctx_manager.get(),
         tb,
