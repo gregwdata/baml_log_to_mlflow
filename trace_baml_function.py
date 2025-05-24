@@ -87,6 +87,7 @@ def trace_baml_function(
                 request_id=request_id,
                 parent_id=parent_id,
                 span_type=SpanType.AGENT,
+                inputs={'args': args, 'kwargs': kwargs},
                 attributes={
                     "baml.id": log.id,
                     "baml.tokens_in": log.usage.input_tokens,
