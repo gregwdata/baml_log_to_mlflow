@@ -12,10 +12,11 @@ function ListInventory(inventory_text: string) -> Inventory[] {
   // you can use custom LLM params with a custom client name from clients.baml like "client CustomHaiku"
   client "openai/gpt-4o" // Set OPENAI_API_KEY to use this client.
   prompt #"
-    Extract from this content:
-    {{ inventory_text }}
+    Extract the inventory items from the following content. 
 
     {{ ctx.output_format }}
+
+    {{ _.role("user") }} {{ inventory_text }}
   "#
 }
 
