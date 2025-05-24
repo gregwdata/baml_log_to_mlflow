@@ -1,15 +1,18 @@
 from baml_client import b
 
 from baml_py import Collector
+from baml_py.errors import BamlError
 from mlflow import MlflowClient, set_experiment
 from mlflow.entities.span import SpanType
 from mlflow.tracing import set_span_chat_messages, set_span_chat_tools
+import traceback
 
-def trace_baml_function(func, *args, **kwargs):
+def trace_baml_function(experiment, func, *args, **kwargs):
     """
     Run a BAML function with the given arguments and keyword arguments.
     """
     
+    set_experiment(experiment)
     client = MlflowClient()
     root_span = client.start_trace("baml_workflow",
                                    tags={"function": func.__name__},
@@ -61,6 +64,13 @@ def trace_baml_function(func, *args, **kwargs):
                                 end_time_ns=(call.timing.start_time_utc_ms + call.timing.duration_ms) * 1_000_000,)
             client.end_span(request_id=req_id, span_id=func_span.span_id, outputs={"out": log.raw_llm_response},
                             end_time_ns=(log.timing.start_time_utc_ms + log.timing.duration_ms) * 1_000_000,)
+    except BamlError as e:
+        # Handle errors from the BAML call
+        print(f"BAML Error: {e}")        
+        result = [{
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }]
     finally: # ensure we always close the trace and child spans
         client.end_trace(
             request_id=req_id,
@@ -70,7 +80,6 @@ def trace_baml_function(func, *args, **kwargs):
                 "result":result
             }
         )
-
 
     # Return the result and logs
     return result
@@ -85,8 +94,7 @@ def main():
     '''
 
     # Extract inventory items
-    set_experiment("baml_inventory")
-    inventory_items = trace_baml_function(b.ListInventory,inventory_text)
+    inventory_items = trace_baml_function("baml_inventory",b.ListInventory,inventory_text)
 
     # Print results
     print("Inventory Items:")
