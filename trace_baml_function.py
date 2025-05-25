@@ -28,7 +28,7 @@ def start_baml_trace(experiment: str) -> Iterator[Tuple[str, str]]:
     set_experiment(experiment)
     client = MlflowClient()
     root_span = client.start_trace(
-        name="baml_multi_workflow",
+        name="baml_trace",
         tags={"experiment": experiment},
         span_type=SpanType.CHAIN,
         inputs={}
