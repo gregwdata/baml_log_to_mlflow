@@ -1,6 +1,6 @@
 # 💥✍ baml_log_to_mlflow
 
-Simple example for logging [BAML](https://docs.boundaryml.com/home) function calls to MLFlow traces.
+Simple helper functions demonstrating logging [BAML](https://docs.boundaryml.com/home) function calls to MLFlow traces. You can either refer to the functions defined in `trace_baml_function.py` as examples, or, if they meet your needs as-is, copy `trace_baml_function.py` into your project to import and use them.
 
 Provides wrapper functions that use the BAML [Collector](https://docs.boundaryml.com/guide/baml-advanced/collector-track-tokens) to log raw LLM inputs/outputs and BAML results into the [MLFlow Trace schema](https://mlflow.org/docs/latest/tracing/)
 
